@@ -102,9 +102,10 @@ function LoopVideoCard({
           ref={videoRef}
           className="h-full w-full object-cover"
           muted
+          autoPlay
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           poster={item.poster}
           controls
         >
