@@ -3,7 +3,6 @@
 import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionWrapper, SectionHeader } from "@/components/shared/SectionWrapper";
-import { useVideoManager } from "@/contexts/VideoContext";
 import { cn } from "@/lib/utils";
 
 type VideoItem = {
@@ -50,7 +49,6 @@ function LoopVideoCard({
   showTitle?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const { registerVideo, playVideo } = useVideoManager();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -59,20 +57,16 @@ function LoopVideoCard({
 
   useEffect(() => {
     if (!isClient || !videoRef.current) return;
-    
-    registerVideo(videoRef);
-    
-    // Set up IntersectionObserver for viewport-based autoplay
+
+    // IntersectionObserver for smart autoplay
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && videoRef.current && videoRef.current.paused) {
-            // Video is in view and not playing
+          if (entry.isIntersecting && videoRef.current?.paused) {
             videoRef.current.play().catch(() => {
-              // Autoplay prevented by browser - user can click play button
+              // Autoplay blocked - user can click play button
             });
           } else if (!entry.isIntersecting && videoRef.current && !videoRef.current.paused) {
-            // Video left view and is playing
             videoRef.current.pause();
           }
         });
@@ -80,24 +74,11 @@ function LoopVideoCard({
       { threshold: 0.25 }
     );
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
+    observer.observe(videoRef.current);
+    return () => observer.disconnect();
+  }, [isClient]);
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [isClient, registerVideo]);
-
-  const handlePlay = () => {
-    if (videoRef.current) {
-      playVideo(videoRef);
-    }
-  };
-
-  if (!isClient) {
-    return null;
-  }
+  if (!isClient) return null;
 
   return (
     <motion.article
@@ -113,23 +94,21 @@ function LoopVideoCard({
     >
       <div
         className={cn(
-          "relative overflow-hidden",
+          "relative overflow-hidden bg-black",
           item.orientation === "portrait" ? "aspect-[9/16]" : "aspect-video"
         )}
       >
         <video
           ref={videoRef}
-          className="h-full w-full object-cover bg-black"
+          className="h-full w-full object-cover"
           muted
           loop
           playsInline
           preload="metadata"
           poster={item.poster}
           controls
-          onPlay={handlePlay}
         >
           <source src={item.src} type="video/mp4" />
-          Your browser does not support the video tag.
         </video>
       </div>
 
