@@ -8,7 +8,7 @@ interface TextRevealProps {
   className?: string;
   delay?: number;
   stagger?: number;
-  tag?: "h1" | "h2" | "h3" | "h4" | "p" | "span";
+  tag?: "h1" | "h2" | "h3" | "h4" | "p" | "span" | "div";
 }
 
 const containerVariants: Variants = {
