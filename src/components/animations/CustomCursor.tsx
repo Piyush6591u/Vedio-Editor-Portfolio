@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useSpring, useMotionValue } from "framer-motion";
+import { Play } from "lucide-react";
 
 export default function CustomCursor() {
   const cursorX = useMotionValue(-100);
@@ -9,6 +10,7 @@ export default function CustomCursor() {
   const springX = useSpring(cursorX, { stiffness: 300, damping: 28 });
   const springY = useSpring(cursorY, { stiffness: 300, damping: 28 });
   const ringRef = useRef<HTMLDivElement | null>(null);
+  const [isVideoHovered, setIsVideoHovered] = useState(false);
 
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
@@ -19,7 +21,10 @@ export default function CustomCursor() {
     const onOver = (e: Event) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      if (target.closest("button, a, [data-cursor='hover'], .magnetic-btn, video")) {
+      if (target.closest("video, .video-play-overlay")) {
+        ringRef.current?.classList.add("cursor--video");
+        setIsVideoHovered(true);
+      } else if (target.closest("button, a, [data-cursor='hover'], .magnetic-btn")) {
         ringRef.current?.classList.add("cursor--hover");
       }
     };
@@ -27,7 +32,10 @@ export default function CustomCursor() {
     const onOut = (e: Event) => {
       const target = e.target as HTMLElement | null;
       if (!target) return;
-      if (target.closest("button, a, [data-cursor='hover'], .magnetic-btn, video")) {
+      if (target.closest("video, .video-play-overlay")) {
+        ringRef.current?.classList.remove("cursor--video");
+        setIsVideoHovered(false);
+      } else if (target.closest("button, a, [data-cursor='hover'], .magnetic-btn")) {
         ringRef.current?.classList.remove("cursor--hover");
       }
     };
@@ -50,8 +58,19 @@ export default function CustomCursor() {
         className="fixed pointer-events-none z-[9999]"
         style={{ x: springX, y: springY }}
       >
-        <div className="cursor-ring md:block hidden" />
-        <div className="cursor-dot md:hidden block" />
+        <div className="cursor-ring md:flex hidden items-center justify-center">
+          {isVideoHovered && (
+            <motion.span
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              className="text-[9px] font-bold tracking-widest text-white mix-blend-normal absolute flex items-center justify-center"
+            >
+              PLAY
+            </motion.span>
+          )}
+        </div>
+        <div className={`cursor-dot md:hidden block ${isVideoHovered ? "opacity-0" : ""}`} />
       </motion.div>
     </>
   );

@@ -4,6 +4,7 @@ import { useRef, useEffect } from "react";
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from "framer-motion";
 import { ArrowDown, Play } from "lucide-react";
 import { MagneticButton } from "@/components/animations/MagneticButton";
+import { TextReveal } from "@/components/animations/TextReveal";
 import { profile } from "@/data/profile";
 
 declare global {
@@ -125,7 +126,12 @@ export function HeroSection() {
       ref={ref}
       className="relative min-h-screen flex items-center overflow-hidden"
       style={{ background: "#050505" }}>
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      
+      {/* Cinematic Overlays */}
+      <div className="absolute inset-0 vignette" />
+      <div className="absolute inset-0 scan-line opacity-50" />
+
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
           className="ambient-light bg-[#5b5bff]"
           style={{ width: 900, height: 900, top: "-25%", right: "-12%", opacity: 0.065, x: springX, y: springY }}
@@ -171,15 +177,11 @@ export function HeroSection() {
 
           {/* Hero headline */}
           <motion.div variants={fadeUp}>
-            <h1 className="hero-title" style={{ color: "#f5f5f5" }}>
-              Cinematic
-              <br />
-              <span className="gradient-text">Video Editor</span>
-              <br />
-              <span style={{ color: "rgba(255,255,255,0.35)", fontSize: "0.7em", letterSpacing: "-0.02em" }}>
-                &amp; Storyteller
-              </span>
-            </h1>
+            <div className="hero-title" style={{ color: "#f5f5f5" }}>
+              <TextReveal text="Cinematic" tag="div" />
+              <TextReveal text="Video Editor" tag="div" className="gradient-text" delay={0.2} />
+              <TextReveal text="& Storyteller" tag="div" className="text-[rgba(255,255,255,0.35)] text-[0.7em] tracking-[-0.02em]" delay={0.4} />
+            </div>
           </motion.div>
 
           {/* Bio */}
@@ -194,7 +196,7 @@ export function HeroSection() {
           <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 pt-2">
             <MagneticButton
               onClick={() => window.open("https://wa.me/917275572180", "_blank")}
-              className="group relative px-9 py-4 rounded-full text-sm font-semibold text-white overflow-hidden"
+              className="group relative px-9 py-4 rounded-full text-sm font-semibold text-white overflow-hidden cta-glow"
               style={{
                 background: "linear-gradient(135deg, #5b5bff, #7c7cff)",
                 boxShadow: "0 0 36px rgba(91,91,255,0.4), 0 4px 20px rgba(0,0,0,0.3)",
@@ -223,7 +225,6 @@ export function HeroSection() {
             className="flex gap-10 pt-6"
             style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
           >
-
           </motion.div>
         </motion.div>
 

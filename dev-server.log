@@ -1,0 +1,13 @@
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.1.12:3000
+✓ Ready in 1398ms
+Creating turbopack project { dir: 'C:\\Users\\asus\\Desktop\\portfoio\\portfoio', testMode: true }
+
+○ Compiling / ...
+ GET / 200 in 28.8s (next.js: 11.9s, application-code: 16.9s)
+✓ Finished writing to filesystem cache in 67s
+✓ Finished filesystem cache database compaction in 26.1s
+✓ Compiled in 273.7s
+○ Compiling /_error ...
+[?25h

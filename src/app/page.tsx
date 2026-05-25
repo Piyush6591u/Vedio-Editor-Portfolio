@@ -8,6 +8,7 @@ import { ScrollProgress } from "@/components/animations/ScrollProgress";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { WorkSection } from "@/components/sections/WorkSection";
 import { SkillSection } from "@/components/sections/SkillSection";
+import { CursorGlow } from "@/components/animations/CursorGlow";
 
 export default function HomePage() {
   const [loaded, setLoaded] = useState(false);
@@ -16,6 +17,7 @@ export default function HomePage() {
   return (
     <>
       <Preloader onComplete={() => setLoaded(true)} />
+      <CursorGlow />
 
       {/* Global chrome */}
       <ScrollProgress />

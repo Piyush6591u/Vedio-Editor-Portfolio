@@ -56,10 +56,10 @@ export function Navbar({ visible }: { visible: boolean }) {
             key={item.id}
             onClick={() => scrollToSection(item.id)}
             className={cn(
-              "relative px-5 py-2.5 text-[13px] font-medium rounded-full tracking-wide transition-colors duration-200 whitespace-nowrap",
+              "group relative px-5 py-2.5 text-[13px] font-medium rounded-full tracking-wide transition-colors duration-200 whitespace-nowrap",
               active === item.id
-                ? "text-white"
-                : "text-[#888] hover:text-[#ddd]"
+                ? "text-white text-glow"
+                : "text-[#888] hover:text-white hover:text-glow"
             )}
           >
             {/* Active pill indicator */}

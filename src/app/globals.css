@@ -202,6 +202,45 @@ body {
   pointer-events: none;
 }
 
+/* ─── Animated gradient border ──────────────────────────── */
+.animated-gradient-border {
+  position: relative;
+  z-index: 0;
+}
+.animated-gradient-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--border-angle, 0deg),
+    transparent 25%,
+    rgba(91,91,255,0.6) 50%,
+    transparent 75%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  animation: rotate-border 4s linear infinite;
+}
+.animated-gradient-border:hover::before {
+  opacity: 1;
+}
+
+@property --border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes rotate-border {
+  to { --border-angle: 360deg; }
+}
+
 /* ─── Glow effects ──────────────────────────────────────── */
 .glow-accent {
   box-shadow: 0 0 30px var(--accent-glow), 0 0 80px rgba(91,91,255,0.08);
@@ -245,6 +284,56 @@ body {
   90% { transform: translate(4%,-1%); }
 }
 
+/* ─── Custom Cursor ─────────────────────────────────────── */
+.cursor-ring {
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid rgba(91,91,255,0.5);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.35s cubic-bezier(0.23,1,0.32,1),
+              height 0.35s cubic-bezier(0.23,1,0.32,1),
+              border-color 0.3s ease,
+              background 0.3s ease,
+              box-shadow 0.3s ease;
+  box-shadow: 0 0 15px rgba(91,91,255,0.15);
+  mix-blend-mode: difference;
+}
+
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.cursor--hover .cursor-ring {
+  width: 64px;
+  height: 64px;
+  border-color: rgba(91,91,255,0.7);
+  background: rgba(91,91,255,0.08);
+  box-shadow: 0 0 30px rgba(91,91,255,0.3);
+}
+
+.cursor--video .cursor-ring {
+  width: 80px;
+  height: 80px;
+  border-color: rgba(91,91,255,0.8);
+  background: rgba(91,91,255,0.12);
+  box-shadow: 0 0 40px rgba(91,91,255,0.35);
+}
+
+/* ─── Cursor Glow ───────────────────────────────────────── */
+.cursor-glow {
+  width: 350px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(91,91,255,0.07) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
 /* ─── Magnetic button ───────────────────────────────────── */
 .magnetic-btn { transition: transform 0.3s cubic-bezier(0.23,1,0.32,1); }
 
@@ -256,11 +345,37 @@ body {
   background: linear-gradient(90deg, var(--accent), #a78bfa);
   z-index: 9998;
   transform-origin: left;
+  box-shadow: 0 0 12px rgba(91,91,255,0.5), 0 0 30px rgba(91,91,255,0.2);
 }
 
 /* ─── Video overlay ─────────────────────────────────────── */
 .video-overlay {
   background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.3) 40%, transparent 100%);
+}
+
+/* ─── Cinematic vignette ────────────────────────────────── */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+  z-index: 1;
+}
+
+/* ─── Cinematic scan-line effect ────────────────────────── */
+.scan-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
 }
 
 /* ─── Floating animation ────────────────────────────────── */
@@ -277,6 +392,13 @@ body {
 }
 .pulse-glow { animation: pulse-glow 3s ease-in-out infinite; }
 
+/* ─── Glow breathe ──────────────────────────────────────── */
+@keyframes glow-breathe {
+  0%,100% { box-shadow: 0 0 20px rgba(91,91,255,0.2), 0 0 60px rgba(91,91,255,0.05); }
+  50%     { box-shadow: 0 0 40px rgba(91,91,255,0.4), 0 0 100px rgba(91,91,255,0.12); }
+}
+.glow-breathe { animation: glow-breathe 4s ease-in-out infinite; }
+
 /* ─── Shimmer ───────────────────────────────────────────── */
 @keyframes shimmer {
   0%   { background-position: -200% center; }
@@ -286,6 +408,72 @@ body {
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
   background-size: 200% auto;
   animation: shimmer 3s linear infinite;
+}
+
+/* ─── Separator shimmer ─────────────────────────────────── */
+@keyframes sep-shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.section-sep-animated {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(91,91,255,0.4), rgba(167,139,250,0.3), rgba(91,91,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: sep-shimmer 6s linear infinite;
+  margin: 0;
+}
+
+/* ─── Card hover tilt perspective ───────────────────────── */
+.tilt-card {
+  perspective: 800px;
+  transform-style: preserve-3d;
+}
+.tilt-card-inner {
+  transition: transform 0.4s cubic-bezier(0.23,1,0.32,1),
+              box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* ─── Video card play overlay ───────────────────────────── */
+.video-play-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.35);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 5;
+  pointer-events: none;
+}
+.video-play-overlay svg {
+  filter: drop-shadow(0 0 20px rgba(91,91,255,0.6));
+}
+.group:hover .video-play-overlay {
+  opacity: 1;
+}
+
+/* ─── CTA button gradient hover ─────────────────────────── */
+.cta-glow {
+  position: relative;
+  overflow: hidden;
+}
+.cta-glow::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(91,91,255,0.5), rgba(167,139,250,0.3), rgba(91,91,255,0.5));
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.35s ease;
+  filter: blur(12px);
+}
+.cta-glow:hover::after {
+  opacity: 1;
 }
 
 /* ─── Legacy compat ─────────────────────────────────────── */

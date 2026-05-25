@@ -39,9 +39,9 @@ function VideoPlayer({ url }: { url: string }) {
       src={url}
       controls
       className="w-full h-full"
-      autoPlay
       onPlay={handleVideoPlay}
       playsInline
+      preload="metadata"
     />
   );
 }

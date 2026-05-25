@@ -36,7 +36,7 @@ export function SectionWrapper({
       style={{ background: "#050505" }}
     >
       {/* Separator */}
-      {withTopSep && <div className="section-sep absolute top-0 left-0 right-0" />}
+      {withTopSep && <div className="section-sep-animated absolute top-0 left-0 right-0 z-20" />}
 
       {/* Ambient blobs */}
       {ambient.map((a, i) => (
@@ -47,11 +47,11 @@ export function SectionWrapper({
             width: "700px",
             height: "700px",
             backgroundColor: a.color ?? "#5b5bff",
-            opacity: 0.055,
+            opacity: 0.08,
             ...ambientPositions[a.position ?? "tr"],
           }}
-          animate={{ scale: [1, 1.12, 1], opacity: [0.04, 0.07, 0.04] }}
-          transition={{ duration: 9 + i * 3, repeat: Infinity, delay: i * 2 }}
+          animate={{ scale: [1, 1.15, 1], opacity: [0.06, 0.1, 0.06] }}
+          transition={{ duration: 8 + i * 2, repeat: Infinity, delay: i * 2 }}
         />
       ))}
 

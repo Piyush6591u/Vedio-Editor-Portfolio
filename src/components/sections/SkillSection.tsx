@@ -40,43 +40,57 @@ export function SkillSection() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-10%" }}
                       transition={{ delay: index * 0.08, duration: 0.6, ease: "easeOut" }}
-                      whileHover={{ y: -6 }}
-                      className={cn(
-                        "relative overflow-hidden rounded-[32px] border border-white/10 bg-[#071119]/90 p-7",
-                        "shadow-[0_18px_60px_rgba(0,0,0,0.25)]"
-                      )}
+                      className="tilt-card group"
                     >
-                      <div className="flex items-center justify-between gap-4 mb-6">
-                        <div
-                          className="flex h-14 w-14 items-center justify-center rounded-full"
-                          style={{
-                            background: "rgba(91,91,255,0.12)",
-                            border: "1px solid rgba(91,91,255,0.18)",
-                          }}
-                        >
-                          <Icon size={22} className="text-[#5b5bff]" />
-                        </div>
-                        <span className="text-[11px] tracking-[0.3em] uppercase" style={{ color: "#7c7cff" }}>
-                          Skill
-                        </span>
-                      </div>
-
-                      <h3 className="card-title mb-3" style={{ color: "#f5f5f5" }}>
-                        {service.title}
-                      </h3>
-                      <p className="text-sm leading-relaxed mb-6" style={{ color: "#b8b8b8", lineHeight: 1.8 }}>
-                        {service.description}
-                      </p>
-
-                      <div className="space-y-3">
-                        {service.features.slice(0, 4).map((feature) => (
-                          <div key={feature} className="flex items-start gap-3">
-                            <span className="mt-1 block h-2 w-2 rounded-full bg-[#5b5bff]" />
-                            <p className="text-sm leading-tight" style={{ color: "#d4d4d4" }}>
-                              {feature}
-                            </p>
+                      <div
+                        className={cn(
+                          "tilt-card-inner relative overflow-hidden rounded-[32px] bg-[#071119]/90 p-7 animated-gradient-border glass-card",
+                          "shadow-[0_18px_60px_rgba(0,0,0,0.25)]"
+                        )}
+                        onMouseMove={(e) => {
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          const x = e.clientX - rect.left;
+                          const y = e.clientY - rect.top;
+                          const rotateX = ((y - rect.height / 2) / (rect.height / 2)) * -6;
+                          const rotateY = ((x - rect.width / 2) / (rect.width / 2)) * 6;
+                          e.currentTarget.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.transform = `perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+                        }}
+                      >
+                        <div className="flex items-center justify-between gap-4 mb-6">
+                          <div
+                            className="flex h-14 w-14 items-center justify-center rounded-full group-hover:glow-accent transition-all duration-300"
+                            style={{
+                              background: "rgba(91,91,255,0.12)",
+                              border: "1px solid rgba(91,91,255,0.18)",
+                            }}
+                          >
+                            <Icon size={22} className="text-[#5b5bff] group-hover:text-white transition-colors" />
                           </div>
-                        ))}
+                          <span className="text-[11px] tracking-[0.3em] uppercase" style={{ color: "#7c7cff" }}>
+                            Skill
+                          </span>
+                        </div>
+
+                        <h3 className="card-title mb-3" style={{ color: "#f5f5f5" }}>
+                          {service.title}
+                        </h3>
+                        <p className="text-sm leading-relaxed mb-6" style={{ color: "#b8b8b8", lineHeight: 1.8 }}>
+                          {service.description}
+                        </p>
+
+                        <div className="space-y-3">
+                          {service.features.slice(0, 4).map((feature) => (
+                            <div key={feature} className="flex items-start gap-3">
+                              <span className="mt-1 block h-2 w-2 rounded-full bg-[#5b5bff] group-hover:scale-125 transition-transform" />
+                              <p className="text-sm leading-tight" style={{ color: "#d4d4d4" }}>
+                                {feature}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </motion.article>
                   );

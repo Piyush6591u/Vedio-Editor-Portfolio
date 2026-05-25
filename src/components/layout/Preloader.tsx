@@ -45,7 +45,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
           key="preloader"
           className="fixed inset-0 z-[9999] flex flex-col items-center justify-center grain"
           style={{ background: "#050505" }}
-          exit={{ opacity: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
+          exit={{ opacity: 0, scale: 1.05, filter: "blur(10px)", transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }}
         >
           {/* Ambient lights */}
           <div className="absolute inset-0 overflow-hidden">
@@ -113,6 +113,7 @@ export function Preloader({ onComplete }: PreloaderProps) {
                     background: "linear-gradient(90deg, #5b5bff, #a78bfa)",
                     width: `${progress}%`,
                     transition: "width 0.03s linear",
+                    boxShadow: "0 0 20px rgba(91,91,255,0.8)",
                   }}
                 />
               </div>

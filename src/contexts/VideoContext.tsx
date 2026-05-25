@@ -31,8 +31,12 @@ export function VideoProvider({ children }: { children: React.ReactNode }) {
   const playVideo = useCallback((videoRef: React.RefObject<HTMLVideoElement | null>) => {
     if (!videoRef.current) return;
 
-    // Pause all other videos
-    pauseAllVideos();
+    // Pause all OTHER videos (not the target) to ensure only one plays at a time
+    allVideoRefsRef.current.forEach((ref) => {
+      if (ref.current && ref.current !== videoRef.current) {
+        ref.current.pause();
+      }
+    });
 
     // Play the selected video
     videoRef.current.play().catch((err) => {
@@ -40,7 +44,7 @@ export function VideoProvider({ children }: { children: React.ReactNode }) {
     });
 
     currentlyPlayingRef.current = videoRef.current;
-  }, [pauseAllVideos]);
+  }, []);
 
   const value: VideoContextType = {
     currentlyPlayingRef,
