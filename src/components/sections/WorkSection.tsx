@@ -56,6 +56,35 @@ function LoopVideoCard({
     registerVideo(videoRef);
   }, [registerVideo]);
 
+  // IntersectionObserver for autoplay when in view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && videoRef.current) {
+            // Video is in view, start playing
+            videoRef.current.play().catch((err) => {
+              // Autoplay may fail due to browser policies, that's ok
+              console.debug("Video autoplay prevented (expected behavior)");
+            });
+          } else if (!entry.isIntersecting && videoRef.current) {
+            // Video left view, pause it
+            videoRef.current.pause();
+          }
+        });
+      },
+      { threshold: 0.5 } // Trigger when 50% of video is visible
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   const handlePlay = () => {
     if (videoRef.current) {
       playVideo(videoRef);
@@ -83,7 +112,6 @@ function LoopVideoCard({
         <video
           ref={videoRef}
           className="h-full w-full object-cover"
-          autoPlay
           muted
           loop
           playsInline
