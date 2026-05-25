@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SectionWrapper, SectionHeader } from "@/components/shared/SectionWrapper";
 import { cn } from "@/lib/utils";
@@ -49,14 +49,9 @@ function LoopVideoCard({
   showTitle?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isClient || !videoRef.current) return;
+    if (!videoRef.current) return;
 
     // IntersectionObserver for smart autoplay
     const observer = new IntersectionObserver(
@@ -76,9 +71,7 @@ function LoopVideoCard({
 
     observer.observe(videoRef.current);
     return () => observer.disconnect();
-  }, [isClient]);
-
-  if (!isClient) return null;
+  }, []);
 
   return (
     <motion.article
