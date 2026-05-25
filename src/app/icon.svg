@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7c5cff"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="256" height="256" rx="56" fill="#0b0b0f"/>
+
+  <!-- Glow -->
+  <circle cx="128" cy="128" r="90" fill="url(#grad)" opacity="0.15"/>
+
+  <!-- Play button -->
+  <polygon points="105,88 175,128 105,168"
+           fill="url(#grad)"/>
+
+  <!-- Film frame -->
+  <rect x="72" y="72" width="112" height="112"
+        rx="20"
+        fill="none"
+        stroke="url(#grad)"
+        stroke-width="10"/>
+
+  <!-- Film holes -->
+  <circle cx="88" cy="96" r="5" fill="#7c5cff"/>
+  <circle cx="88" cy="128" r="5" fill="#7c5cff"/>
+  <circle cx="88" cy="160" r="5" fill="#7c5cff"/>
+
+  <circle cx="168" cy="96" r="5" fill="#7c5cff"/>
+  <circle cx="168" cy="128" r="5" fill="#7c5cff"/>
+  <circle cx="168" cy="160" r="5" fill="#7c5cff"/>
+</svg>
