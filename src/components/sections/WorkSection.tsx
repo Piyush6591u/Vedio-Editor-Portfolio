@@ -51,26 +51,27 @@ function LoopVideoCard({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    if (!videoRef.current) return;
+    const video = videoRef.current;
+    if (!video) return;
 
-    // IntersectionObserver for smart autoplay
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && videoRef.current?.paused) {
-            videoRef.current.play().catch(() => {
-              // Autoplay blocked - user can click play button
-            });
-          } else if (!entry.isIntersecting && videoRef.current && !videoRef.current.paused) {
-            videoRef.current.pause();
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
+    // Force play on client-side
+    const playVideo = async () => {
+      try {
+        await video.play();
+      } catch (e) {
+        // Autoplay blocked, user can click play
+      }
+    };
 
-    observer.observe(videoRef.current);
-    return () => observer.disconnect();
+    // Start playing once video is loaded
+    video.addEventListener("loadedmetadata", playVideo);
+    
+    // Also try to play immediately
+    playVideo();
+
+    return () => {
+      video.removeEventListener("loadedmetadata", playVideo);
+    };
   }, []);
 
   return (
