@@ -45,9 +45,18 @@ Edit the data files under `src/data/` and replace `public/` media to personalize
 
 ## 🌐 Deployment
 
-**Live Site:** https://portfolio-5g2dcujh3-piyushupadhyay.vercel.app
+This project is configured for Netlify deployment.
 
-Deploy to Vercel, Netlify, or any Next.js-compatible hosting provider.
+### Deploy to Netlify:
+
+1. Push your code to GitHub
+2. Go to [Netlify](https://app.netlify.com/)
+3. Click "Add new site" → "Import an existing project"
+4. Connect your GitHub repository
+5. Deploy settings will be auto-detected from netlify.toml
+6. Click "Deploy site"
+
+Alternatively, you can deploy to other Next.js-compatible hosting providers like Vercel, AWS Amplify, or Railway.
 
 ---
 
