@@ -1,7 +1,9 @@
 "use client";
 
+import { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { SectionWrapper, SectionHeader } from "@/components/shared/SectionWrapper";
+import { useVideoManager } from "@/contexts/VideoContext";
 import { cn } from "@/lib/utils";
 
 type VideoItem = {
@@ -47,6 +49,19 @@ function LoopVideoCard({
   className?: string;
   showTitle?: boolean;
 }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { registerVideo, playVideo } = useVideoManager();
+
+  useEffect(() => {
+    registerVideo(videoRef);
+  }, [registerVideo]);
+
+  const handlePlay = () => {
+    if (videoRef.current) {
+      playVideo(videoRef);
+    }
+  };
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 32 }}
@@ -66,6 +81,7 @@ function LoopVideoCard({
         )}
       >
         <video
+          ref={videoRef}
           className="h-full w-full object-cover"
           autoPlay
           muted
@@ -74,6 +90,7 @@ function LoopVideoCard({
           preload="metadata"
           poster={item.poster}
           controls
+          onPlay={handlePlay}
         >
           <source src={item.src} type="video/mp4" />
           Your browser does not support the video tag.

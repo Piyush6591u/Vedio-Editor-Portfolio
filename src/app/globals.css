@@ -258,51 +258,6 @@ body {
   transform-origin: left;
 }
 
-/* ─── Cursor glow ───────────────────────────────────────── */
-.cursor-glow {
-  position: fixed;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(91,91,255,0.05) 0%, transparent 65%);
-  pointer-events: none;
-  z-index: 0;
-  transform: translate(-50%,-50%);
-}
-
-/* Custom cursor visuals */
-.cursor-ring {
-  width: 72px;
-  height: 72px;
-  border-radius: 9999px;
-  border: 1px solid rgba(91,91,255,0.18);
-  box-shadow: 0 6px 40px rgba(91,91,255,0.08), inset 0 0 24px rgba(91,91,255,0.02);
-  transform: translate(-50%, -50%);
-  transition: transform 280ms cubic-bezier(0.22,1,0.36,1), width 300ms, height 300ms, opacity 250ms;
-  opacity: 0.95;
-}
-.cursor-dot {
-  width: 10px;
-  height: 10px;
-  background: radial-gradient(circle at 30% 30%, #fff, #cbd5ff 60%);
-  border-radius: 9999px;
-  transform: translate(-50%, -50%);
-  box-shadow: 0 6px 24px rgba(91,91,255,0.18);
-}
-.cursor--hover .cursor-ring {
-  transform: translate(-50%, -50%) scale(1.28);
-  width: 98px;
-  height: 98px;
-  opacity: 1;
-}
-
-/* hide native cursor on interactive areas to surface custom cursor */
-/* Hide native cursor only on hover-capable devices to avoid blocking touch UX */
-@media (hover: hover) and (pointer: fine) {
-  body, button, a { cursor: none; }
-}
-
-
 /* ─── Video overlay ─────────────────────────────────────── */
 .video-overlay {
   background: linear-gradient(to top, rgba(5,5,5,0.95) 0%, rgba(5,5,5,0.3) 40%, transparent 100%);

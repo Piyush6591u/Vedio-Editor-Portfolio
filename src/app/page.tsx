@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useLenis } from "@/hooks/useLenis";
 import { Preloader } from "@/components/layout/Preloader";
 import { Navbar } from "@/components/layout/Navbar";
-import { CursorGlow } from "@/components/animations/CursorGlow";
 import { ScrollProgress } from "@/components/animations/ScrollProgress";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { WorkSection } from "@/components/sections/WorkSection";
@@ -20,7 +19,6 @@ export default function HomePage() {
 
       {/* Global chrome */}
       <ScrollProgress />
-      <CursorGlow />
       <Navbar visible={loaded} />
 
       {/* Grain overlay */}

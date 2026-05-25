@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import PageTransition from "@/components/animations/PageTransition";
+import { VideoProvider } from "@/contexts/VideoContext";
 
 export const metadata: Metadata = {
   title: "Piyush Kumar Upadhyay | Video Editor",
@@ -22,8 +23,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <PageTransition />
-        <div id="__app_root">{children}</div>
+        <VideoProvider>
+          <PageTransition />
+          <div id="__app_root">{children}</div>
+        </VideoProvider>
       </body>
     </html>
   );

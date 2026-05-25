@@ -1,8 +1,10 @@
 "use client";
 
+import { useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Play, Clock, Monitor, Star, ChevronRight } from "lucide-react";
 import { Project } from "@/data/projects";
+import { useVideoManager } from "@/contexts/VideoContext";
 
 function getYouTubeId(url: string): string | null {
   const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
@@ -10,7 +12,16 @@ function getYouTubeId(url: string): string | null {
 }
 
 function VideoPlayer({ url }: { url: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { playVideo, pauseAllVideos } = useVideoManager();
   const youtubeId = getYouTubeId(url);
+
+  const handleVideoPlay = () => {
+    if (videoRef.current) {
+      playVideo(videoRef);
+    }
+  };
+
   if (youtubeId) {
     return (
       <iframe
@@ -21,8 +32,17 @@ function VideoPlayer({ url }: { url: string }) {
       />
     );
   }
+
   return (
-    <video src={url} controls className="w-full h-full" autoPlay />
+    <video
+      ref={videoRef}
+      src={url}
+      controls
+      className="w-full h-full"
+      autoPlay
+      onPlay={handleVideoPlay}
+      playsInline
+    />
   );
 }
 
@@ -60,7 +80,7 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             {/* Close */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors"
+              className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full flex items-center justify-center transition-colors hover:bg-white/20"
               style={{ background: "rgba(255,255,255,0.08)", color: "#f5f5f5" }}
             >
               <X size={18} />
