@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionWrapper, SectionHeader } from "@/components/shared/SectionWrapper";
 import { useVideoManager } from "@/contexts/VideoContext";
@@ -51,29 +51,33 @@ function LoopVideoCard({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { registerVideo, playVideo } = useVideoManager();
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient || !videoRef.current) return;
+    
     registerVideo(videoRef);
-  }, [registerVideo]);
-
-  // IntersectionObserver for autoplay when in view
-  useEffect(() => {
+    
+    // Set up IntersectionObserver for viewport-based autoplay
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && videoRef.current) {
-            // Video is in view, start playing
-            videoRef.current.play().catch((err) => {
-              // Autoplay may fail due to browser policies, that's ok
-              console.debug("Video autoplay prevented (expected behavior)");
+          if (entry.isIntersecting && videoRef.current && videoRef.current.paused) {
+            // Video is in view and not playing
+            videoRef.current.play().catch(() => {
+              // Autoplay prevented by browser - user can click play button
             });
-          } else if (!entry.isIntersecting && videoRef.current) {
-            // Video left view, pause it
+          } else if (!entry.isIntersecting && videoRef.current && !videoRef.current.paused) {
+            // Video left view and is playing
             videoRef.current.pause();
           }
         });
       },
-      { threshold: 0.5 } // Trigger when 50% of video is visible
+      { threshold: 0.25 }
     );
 
     if (videoRef.current) {
@@ -83,13 +87,17 @@ function LoopVideoCard({
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [isClient, registerVideo]);
 
   const handlePlay = () => {
     if (videoRef.current) {
       playVideo(videoRef);
     }
   };
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <motion.article
@@ -111,7 +119,7 @@ function LoopVideoCard({
       >
         <video
           ref={videoRef}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover bg-black"
           muted
           loop
           playsInline
