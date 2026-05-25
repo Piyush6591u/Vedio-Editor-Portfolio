@@ -45,6 +45,8 @@ Edit the data files under `src/data/` and replace `public/` media to personalize
 
 ## 🌐 Deployment
 
+**Live Site:** https://portfolio-5g2dcujh3-piyushupadhyay.vercel.app
+
 Deploy to Vercel, Netlify, or any Next.js-compatible hosting provider.
 
 ---
